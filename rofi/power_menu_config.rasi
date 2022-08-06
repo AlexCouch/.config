@@ -1,0 +1,56 @@
+configuration {
+	font: "Font Awesome 5 Free Regular 12";
+	width: 15;
+	lines: 3;
+	location: 1;
+	yoffset: 30;
+	click-to-exit: true;
+}
+
+window{
+	background-color: #1b1918ff;
+	text-color: #ffffffff;
+}
+
+prompt {
+	enabled: true;
+	padding: 0.5% 0.5% 0.5% 0%;
+	background-color: #1b1918ff;
+	text-color: #ffffffff;
+}
+
+textbox-prompt-colon{
+	expand: false;
+	background-color: #ffffffff;
+	text-color: #ffffffff;
+}
+
+inputbar {
+	children: [textbox-prompt-colon, prompt];
+	background-color: #1b1918ff;
+	text-color: #ffffffff;
+}
+
+listview{
+	background-color: #1b1918ff;
+	text-color: #ffffffff;
+}
+
+mainbox{
+	background-color: #1b1918ff;
+	text-color: #ffffffff;
+}
+
+element{
+	background-color: #1b1918ff;
+	text-color: #ffffffff;
+}
+
+element selected{
+	background-color: #766e6bff;
+	text-color: #ffffffff;
+}
+
+element selected.active{
+	background-color: #cbbfbfff; 
+}

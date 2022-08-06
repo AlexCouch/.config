@@ -1,0 +1,287 @@
+#			    #
+#	BASE BAR	#
+#			    #
+[bar/base]
+height = 30
+background = #ff1b1918
+module-margin = 2
+separator = |
+line-size = 3
+wm-restack = bspwm
+font-0 = Font Awesome 5 Free Regular:size=12;1
+font-1 = Font Awesome 5 Free Solid:size=12;1
+font-2 = Weather Icons:size=12
+font-3 = Noto Sans:size=12
+
+[bar/bottom]
+inherit = bar/base
+
+bottom = true
+
+#			    #
+#	LEFT BAR	#
+#			    #
+
+[bar/left]
+inherit = bar/bottom
+
+modules-left = bspwm
+modules-right = cpu memory
+modules-center = date
+monitor = DVI-D-0
+
+
+#			    #
+#	RIGHT BAR	#
+#			    #
+
+[bar/right]
+inherit = bar/bottom
+
+modules-left = bspwm
+modules-center = spotify
+modules-right = ping network speakers
+monitor = HDMI-0
+
+#			        #
+#     LEFT TOP BAR	#
+#			        #
+
+[bar/left_top]
+inherit = bar/base
+
+modules-left = power_menu
+modules-center = active_window_left
+modules-right = weather
+monitor = HDMI-0
+font-4 = Weather Icons:size=12
+
+#			            #
+#     RIGHT TOP BAR	    #
+#			            #
+
+[bar/right_top]
+inherit = bar/base
+modules-left = power_menu
+modules-center = active_window_right
+modules-right = bluetooth disk
+monitor = DVI-D-0
+font-4 = Font Awesome 5 Brands:size=12;1
+
+#			    #
+#	 MODULES	#
+#			    #
+
+#			    #
+#	 CUSTOM		#
+#			    #
+
+ 
+[module/network]
+type = internal/network
+interface = eno1
+
+interval = 1.0
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+
+label-connected = %ifname% %upspeed:5% / %downspeed:5%
+label-connected-foreground = #00bf0d
+
+label-disconnected = N/A
+label-disconnected-foreground = #9e0000
+
+[module/active_window_left]
+type = custom/script
+exec = ~/.config/polybar/window_title.sh HDMI-0
+interval = 0.5
+
+[module/active_window_right]
+type = custom/script
+exec = ~/.config/polybar/window_title.sh DVI-D-0
+interval = 0.5
+
+[module/spotify]
+type = custom/script
+exec = python3 ~/polybar-spotify/spotify_status.py -q
+interval = 1
+format = <label>
+format-underline = #1db954
+
+[module/ping]
+type = custom/script
+exec = ~/.config/polybar/ping.sh
+interval = 5
+
+[module/disk]
+type = custom/script
+exec = ~/.config/polybar/disk.sh
+format = <label>
+format-underline = #2954ff
+interval = 5
+
+[module/power_menu]
+type = custom/text
+click-left = ~/.config/polybar/power_menu.sh
+content = %{F#ab1313}%{F-}
+
+[module/weather]
+type = custom/script
+exec = ~/.config/polybar/weather-simple.sh
+interval = 5
+
+[module/bluetooth]
+type = custom/script
+exec = ~/.config/polybar/bluetooth.sh
+interval = 5
+format-underline = #00a6ff
+
+#			    #
+#	INTERNAL	#
+#			    #
+
+
+[module/speakers]
+type = internal/pulseaudio
+sink = alsa_output.pci-0000_00_1b.0.analog-stereo.monitor
+
+; Available tags:
+;   <label-volume> (default)
+;   <ramp-volume>
+;   <bar-volume>
+format-volume = <label-volume> <bar-volume>
+
+; Available tags:
+;   <label-muted> (default)
+;   <ramp-volume>
+;   <bar-volume>
+format-muted = <label-muted> <bar-volume>
+
+; Available tokens:
+;   %percentage% (default)
+;   %decibels%
+label-volume = Audio: %percentage%%
+
+; Available tokens:
+;   %percentage% (default)
+;   %decibels%
+label-muted = Audio: muted
+label-muted-foreground = #666
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #222
+bar-volume-foreground-1 = #373b41
+bar-volume-foreground-2 = #3a874f
+bar-volume-foreground-3 = #26a649
+bar-volume-foreground-4 = #1dd413
+bar-volume-foreground-5 = #73d413
+bar-volume-foreground-6 = #7aed07
+bar-volume-foreground-7 = #e5ed07
+bar-volume-foreground-8 = #e5ed07
+bar-volume-foreground-9 = #ed5f07
+bar-volume-gradient = false
+bar-volume-indicator = █
+bar-volume-indicator-font = 2
+bar-volume-fill = █
+bar-volume-fill-font = 2
+bar-volume-empty = ▒
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = #5fff
+
+click-right = pavucontrol
+
+
+[module/memory]
+type = internal/memory
+format = <label> <ramp-used>
+
+label = RAM %gb_used% / %gb_total%
+
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-5 = ▆
+ramp-used-6 = ▇
+ramp-used-7 = █
+
+
+
+[module/date]
+type = internal/date
+
+date = %d-%m-%Y%
+time = %H:%M:%S
+label = %date% - %time%
+
+[module/cpu]
+type = internal/cpu
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label> <ramp-coreload>
+
+; Available tokens:
+;   %percentage% (default) - total cpu load averaged over all cores
+;   %percentage-sum% - Cumulative load on all cores
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label = CPU %percentage%%
+
+; Spacing between individual per-core ramps
+ramp-coreload-spacing = 1
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+
+label-focused = %name%
+label-focused-background = #cc766e6b
+label-focused-padding = 2
+label-focused-underline = #ffcbbfbf
+label-occupied-padding = 2
+label-empty-padding = 2
+
+label-separator = |
+label-separator-padding = 0.5
+
+[module/menu]
+type = custom/menu
+
+expand-right = true
+
+menu-0-0 = Browsers 
+menu-0-0-exec = menu-open-1
+
+menu-0-1 = Misc
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = Firefox
+menu-1-0-exec = firefox &
+
+menu-1-1 = Chrome
+menu-1-1-exec = google-chrome-stable &
+
+menu-2-0 = Spotify
+menu-2-0-exec = spotify &
+
+menu-2-1 = Discord
+menu-2-1-exec = discord &
+
+label-toggle = >
+label-open = Apps
+label-close = X
+
+label-separator = |
